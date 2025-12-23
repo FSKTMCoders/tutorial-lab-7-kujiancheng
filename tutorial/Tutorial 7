@@ -1,0 +1,167 @@
+1. Write statements for each of the following
+a. Store ten random integers within 0 to 1000 to a text file name integer.txt.
+try{
+	PrintWriter outputStream = new PrintWriter(new 
+FileOutputStream(“integer.txt”));
+	for(int i = 0; i<10; i++){
+		outputStream.println((int)(Math.random() * 1001));
+	}
+	outputStream.close();
+} catch (IOException e){
+	System.out.println(“Error writing the file”);
+}
+
+b. Read from the text file generated in a. Display all the integer and the largest integer.
+int max = 0;
+        try{
+           		 Scanner scanner = new Scanner(new FileInputStream("integer.txt"));
+            while(scanner.hasNextLine()){
+               	 int num = scanner.nextInt();
+               	 if(num > max) max = num;
+               	 System.out.println(num);
+               	 scanner.nextLine();
+            }
+
+           		System.out.println("The maximum number is " + max);
+            	scanner.close();
+        } catch (FileNotFoundException e){
+            	System.out.println("The file is not found");
+        }	
+
+c. Store ten random integers within 0 to 1000 to a binary file name integer.dat.
+try{
+            ObjectOutputStream streamOb = new ObjectOutputStream(new
+                    FileOutputStream("integer.dat"));
+            for(int i = 0; i<10; i++) {
+                int num = (int)(Math.random() * 1001);
+                streamOb.writeUTF(num + "\n");
+                streamOb.writeChars("\n");
+            }
+            streamOb.close();
+        }
+        catch (IOException e){
+            System.out.println("The file cannot be written. ");
+        }
+
+d. Read from the binary file generated in a c. Display the all the integer and the average.
+double sum = 0;
+double average = 0;
+try{
+	ObjectInputStream inputStream = new ObjectInputStream(new 
+FileInputStream(“integer.dat”));
+		for(int i = 0; i<10; i++)
+			sum+=inputStream.readInt();
+			
+		inputStream.close();
+	}
+	catch(EOFException e){
+		System.out.println(“The file has reached the end.”);
+	}
+	
+	average = sum/10;
+	System.out.println(“The average of the 10 numbers is: ” + average); 
+
+2. Correct the error for the following statements.
+a. PrintWriter out = new PrintWriter(new FileOutputStream ("d:\data\matrix.txt"));
+
+try{
+	PrintWriter out = new PrintWriter(new 
+FileOutputStream(“d:\\data\\matrix.txt”);
+		out.close();
+	} catch (IOException e){
+		System.out.println(“Unable to write your file.”);
+	}
+
+b.
+try {
+ PrintWriter out = new PrintWriter(new FileOutputStream("data.txt"));
+ out.close();
+} catch (FileNotFoundException e) {
+ System.out.println("Problem with file output");
+}
+
+try { 
+PrintWriter out = new PrintWriter(new FileOutputStream("data.txt")); 
+out.close(); 
+} catch (IOException e) { 
+System.out.println("Problem with file output"); 
+} 
+
+c.
+int num;
+Scanner a = new Scanner(new FileInputStream("data.dat"));
+num = a.readInt();
+a.close();
+
+int num = 0; 
+try{
+ObjectInputStream a = new ObjectInputStream(new 
+FileInputStream("data.dat")); 
+num = a.readInt(); 
+a.close(); 
+} catch(IOException e){
+	System.out.println(“The file is not found.”);
+}
+
+d.
+ObjectOutputStream o = new ObjectOutputStream (new
+FileOutputStream("data.dat"));
+o.print('A');
+o.close();
+
+try{
+ObjectOutputStream o = new ObjectOutputStream (new 
+FileOutputStream("data.dat")); 
+o.writeUTF(“A”); 
+o.close();	
+	}catch(IOException e){
+		System.out.println(“File cannot be written”);
+	}
+		
+3. Write a program that convert a sentence into binary number (ASCII code 8 bit) and
+store it in a text file named data.txt. Then, read from the text file and display the
+sentence.
+ try {
+            PrintWriter w = new PrintWriter(new FileOutputStream("data.txt"));
+            String sentence = "Hi";
+            String ascii = "";
+
+            for (int i = 0; i < sentence.length(); i++) {
+                char letter = sentence.charAt(i);
+                ascii += String.format("%08d", Integer.parseInt(Integer.toBinaryString(letter)));
+            }
+
+            w.print(ascii);
+            w.close();
+        } catch(IOException e){
+            System.out.println("The file cannot be written.");
+        }
+
+        try{
+            Scanner scanner = new Scanner(new FileInputStream("data.txt"));
+
+            int code = 0;
+            String num = "";
+
+            while(scanner.hasNextLine()){
+
+                num += scanner.next();
+            }
+
+            System.out.println(num);
+            String wholeSentence = "";
+            for(int i = 0; i<num.length(); i+=8) {
+                code = 0;
+               for(int j = i, z = 7; j<i+8; j++, z--){
+                   code+=Integer.parseInt(String.valueOf(num.charAt(j))) * Math.pow(2, z);
+               }
+                char print = (char)code;
+                wholeSentence += print;
+            }
+
+            System.out.println(wholeSentence);
+
+            scanner.close();
+        }catch(IOException e){
+            System.out.println("File is not available");
+        }
